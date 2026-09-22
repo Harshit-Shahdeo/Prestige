@@ -57,12 +57,19 @@ export class ReviewSessionsService {
                 id:true,
                 tenantId:true,
                 status:true,
+                tenant:{
+                    select:{
+                        businessType: true
+                    }
+                }
             }
         });
 
         if(!session){
             throw new NotFoundException('Review session is not found');
         }
+
+        console.log('BUSINESS TYPE:', session.tenant.businessType);
 
         if(session.status !== 'STARTED'){
             throw new BadRequestException(

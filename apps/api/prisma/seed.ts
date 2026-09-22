@@ -11,6 +11,7 @@ async function main() {
     create: {
       name: 'Prestige Demo Restaurant',
       slug: 'prestige-demo',
+      businessType:'cafe',
     },
   });
 

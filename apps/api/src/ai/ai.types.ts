@@ -21,3 +21,19 @@ export interface AIProvider{
 
     generate(input : AIGenerationInput,):Promise<AIGenerationResult>;
 }
+
+export type Sentiment = 
+| 'POSITIVE'
+| 'NEUTRAL'
+| 'NEGATIVE';
+
+export interface FeedbackAnalysis{
+    sentiment: Sentiment;
+    review: string;
+}
+
+export interface FeedbackAnalysisInput{
+    businessType:string,
+    rating:number;
+    keywords:string[];
+}

@@ -24,13 +24,16 @@ export class GroqProvider implements AIProvider{
     ):Promise<AIGenerationResult>{
         const response = 
         await this.groq.chat.completions.create({
-            model : 'llama-3.1-8b-instant',
+            model : 'openai/gpt-oss-20b',
             temperature: input.temperature ?? 0.2,
             max_tokens: input.maxTokens ?? 500,
+            response_format:{
+                type:'json_object'
+            },
             messages:[
                 {
                     role:'system',
-                    content: input.userPrompt,
+                    content: input.systemPrompt,
                 },
                 {
                     role:'user',
@@ -38,6 +41,11 @@ export class GroqProvider implements AIProvider{
                 },
             ],
         });
+
+        console.log(
+  'GROQ RESPONSE:',
+  JSON.stringify(response, null, 2),
+);
 
         const content = 
         response.choices[0]?.message?.content;
@@ -50,7 +58,7 @@ export class GroqProvider implements AIProvider{
 
         return {
             provider: this.name,
-            model: 'llama-3.1-8b-instant',
+            model: 'openai/gpt-oss-20b',
             content,
             inputTokens: response.usage?.prompt_tokens,
             outputTokens: response.usage?.completion_tokens,

@@ -3,11 +3,15 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { ReviewSessionsModule } from './review-sessions/review-sessions.module';
-import { AiService } from './ai/ai.service';
+import { AiModule } from './ai/ai.module';
 
 @Module({
-  imports: [PrismaModule, ReviewSessionsModule],
+  imports: [
+    PrismaModule,
+    ReviewSessionsModule,
+    AiModule,
+  ],
   controllers: [AppController],
-  providers: [AppService, AiService],
+  providers: [AppService],
 })
 export class AppModule {}
