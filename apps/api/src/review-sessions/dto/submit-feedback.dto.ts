@@ -1,5 +1,5 @@
 import {Type} from 'class-transformer';
-import { IsArray, IsInt, IsNotEmpty, Max, Min, ValidateNested } from 'class-validator';
+import { IsArray, IsInt, IsNotEmpty, IsOptional, IsString, Max, Min, ValidateNested } from 'class-validator';
 import { FeedbackKeywordDto } from './feedback-keyword.dto';
 
 export class SubmitFeedbackDto{
@@ -13,5 +13,11 @@ export class SubmitFeedbackDto{
     @ValidateNested()
     @Type(()=> FeedbackKeywordDto)
     keywords!:FeedbackKeywordDto[]
+
+    @IsOptional()
+    @IsString()
+    @IsNotEmpty()
+    language?:string
+
 
 }

@@ -34,6 +34,16 @@ export interface FeedbackAnalysis{
 
 export interface FeedbackAnalysisInput{
     businessType:string,
+    language:string,
     rating:number;
-    keywords:string[];
+    keywords:{
+        name:string,
+        sentiment:Sentiment;
+    }[];
+    
+}
+
+export interface FeedbackAnalysisResult {
+  analysis: FeedbackAnalysis;
+  generation: AIGenerationResult;
 }

@@ -11,8 +11,13 @@ export class AiController {
     async test(){
         return this.aiGateway.analyzeFeedback({
   businessType: 'cafe',
-  rating: 3,
-  keywords: ['food', 'service', 'ambience'],
+  language:'English',
+  rating: 1,
+  keywords: [
+  { name: 'food', sentiment: 'NEGATIVE' },
+  { name: 'service', sentiment: 'NEGATIVE' },
+  { name: 'ambience', sentiment: 'NEGATIVE' },
+],
 });
     }
 }

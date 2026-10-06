@@ -21,16 +21,17 @@ model Tenant {
 }
 
 model Location {
-  id             String          @id @default(cuid())
-  tenantId       String
-  name           String
-  address        String
-  timezone       String
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  tenant         Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  reviewSessions ReviewSession[]
-  tables         Table[]
+  id              String          @id @default(cuid())
+  tenantId        String
+  name            String
+  address         String
+  timezone        String
+  googleReviewUrl String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  tenant          Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  reviewSessions  ReviewSession[]
+  tables          Table[]
 
   @@index([tenantId])
 }
@@ -54,7 +55,7 @@ model ReviewSession {
   tenantId    String
   locationId  String
   tableId     String
-  language    String               @default("English")
+  language    String              @default("English")
   status      ReviewSessionStatus @default(STARTED)
   rating      Int?
   createdAt   DateTime            @default(now())

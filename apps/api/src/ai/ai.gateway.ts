@@ -1,9 +1,10 @@
 import {Inject, Injectable} from '@nestjs/common';
+import { FeedbackAnalysisSchema } from './ai.schemas';
 
 import{
     AIGenerationInput,
     AIGenerationResult,
-    FeedbackAnalysis
+    FeedbackAnalysisResult
 } from './ai.types';
 
 import type { AIProvider, FeedbackAnalysisInput } from './ai.types';
@@ -23,11 +24,11 @@ export class AiGateway{
         return this.aiProvider.generate(input);
     }
 
-    async analyzeFeedback(
-  input:FeedbackAnalysisInput
-): Promise<AIGenerationResult> {
-  return this.generate({
-   systemPrompt: `
+   async analyzeFeedback(
+  input: FeedbackAnalysisInput,
+): Promise<FeedbackAnalysisResult> {
+  const result = await this.generate({
+    systemPrompt: `
 You generate short customer reviews for Prestige.
 
 Your job is to turn the customer's rating and feedback signals
@@ -45,6 +46,10 @@ IMPORTANT:
 - The review should sound casual, conversational, and human.
 - Prefer simple everyday language over polished or professional
   language.
+- Write the review in the language specified by the "language" field.
+- Treat the language field as the customer's requested language or language variety.
+- If the requested language is a mixed-language variety such as Hinglish, write naturally using that variety rather than mechanically translating from English.
+- Do not change the intended sentiment or meaning when writing in another language.
 - Avoid marketing language, promotional wording, and exaggerated
   praise.
 - Avoid generic AI phrases such as "overall, it was a great
@@ -76,5 +81,16 @@ Return ONLY valid JSON in exactly this format:
     temperature: 0.7,
     maxTokens: 300,
   });
+
+  const parsed = JSON.parse(result.content);
+
+  const analysis = FeedbackAnalysisSchema.parse(parsed);
+
+  return{
+    analysis, 
+    generation:result
+  }
+
+  
 }
     }
